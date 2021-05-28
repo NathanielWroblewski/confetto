@@ -7,7 +7,7 @@ import { seed, noise } from './utilities/noise.js'
 import { marchingCubes } from './utilities/marches.js'
 import { remap, cube } from './utilities/index.js'
 import { COLORS, LIGHT_GREY } from './constants/colors.js'
-import { Δt, MODULUS, AMPLITUDE, RESOLUTION, ZOOM, TIME_RESET } from './constants/dimensions.js'
+import { Δt, MODULUS, AMPLITUDE, RESOLUTION, ZOOM, TIME_RESET, FPS } from './constants/dimensions.js'
 
 // Copyright (c) 2020 Nathaniel Wroblewski
 // I am making my contributions/submissions to this project solely in my personal
@@ -42,7 +42,7 @@ const volume = []
 
 let time = 0
 
-const step = () => {
+const render = () => {
   context.clearRect(0, 0, canvas.width, canvas.height)
 
   cube({ from, to, by }, ([x, y, z]) => {
@@ -78,7 +78,18 @@ const step = () => {
   time += Δt
 
   if (time === TIME_RESET) time = 0
+}
+
+let prevTick = 0
+
+const step = () => {
   window.requestAnimationFrame(step)
+
+  const now = Math.round(FPS * Date.now() / 1000)
+  if (now === prevTick) return
+  prevTick = now
+
+  render()
 }
 
 step()
