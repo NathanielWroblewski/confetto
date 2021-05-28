@@ -12,3 +12,4 @@ export const MODULUS = 2
 export const AMPLITUDE = 40
 export const RESOLUTION = 0.02
 export const ZOOM = 0.05
+export const FPS = 60
